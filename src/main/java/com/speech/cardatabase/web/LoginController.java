@@ -8,10 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class LoginController {
@@ -23,12 +20,12 @@ public class LoginController {
     AuthenticationManager authenticationManager;
 
     @RequestMapping(value="/login", method= RequestMethod.POST )
-    public ResponseEntity<?> getToken(@ResponseBody AccountCredentials credentials ){
+    public ResponseEntity<?> getToken(@RequestBody AccountCredentials credentials ){
         UsernamePasswordAuthenticationToken creds=
                 new UsernamePasswordAuthenticationToken(
                         credentials.getUsername(),
                         credentials.getPassword()
-                ));
+                );
 
         Authentication auth = authenticationManager.authenticate(creds);
 
