@@ -21,6 +21,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.csrf().disable()
+        http.csrf().disable().cors().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
@@ -49,8 +54,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 // 다른 모든 요청은 보호됨
                 .anyRequest().authenticated().and()
-                .addFilterBefore(authenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling()
+                .authenticationEntryPoint(exeptionHandler).and()
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+
     }
 
     @Bean
