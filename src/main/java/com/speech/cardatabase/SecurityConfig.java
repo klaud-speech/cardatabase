@@ -38,11 +38,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationFilter authenticationFilter;
 
     @Autowired
+    private AuthEntryPoint exceptionHandler;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
+    //클래스에 전역 CORS 필터 추가
+    @Bean
+    CorsConfigurationSource corsConfigurationSource(){
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins( Arrays.asList("*"));
+        config.setAllowedMethods( Arrays.asList("*"));
+        config.setAllowedHeaders( Arrays.asList("*"));
+        config.setAllowCredentials(false);
+        config.applyPermitDefaultValues();
 
+        source.registerCorsConfiguration("/**", config );
+        return source;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
@@ -55,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 다른 모든 요청은 보호됨
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
-                .authenticationEntryPoint(exeptionHandler).and()
+                .authenticationEntryPoint( exceptionHandler ).and()
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
