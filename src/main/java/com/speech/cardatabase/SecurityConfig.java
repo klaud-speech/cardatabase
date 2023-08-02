@@ -42,7 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     //클래스에 전역 CORS 필터 추가
@@ -86,6 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+/*
     @Bean
     @Override
     public UserDetailsService userDetailsService(){
@@ -97,6 +99,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .build();
         return new InMemoryUserDetailsManager(user);
     }
+*/
+
 
     @Bean
     public AuthenticationManager getAuthenticationManager() throws Exception{

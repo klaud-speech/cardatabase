@@ -1,6 +1,8 @@
 package com.speech.cardatabase.web;
 
 import com.speech.cardatabase.AccountCredentials;
+import com.speech.cardatabase.domain.User;
+import com.speech.cardatabase.domain.UserRepository;
 import com.speech.cardatabase.service.EmailService;
 import com.speech.cardatabase.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,6 +28,9 @@ public class LoginController {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> getToken(@RequestBody AccountCredentials credentials) {
@@ -66,6 +72,12 @@ public class LoginController {
                 + "The LLsoLLu ezWEB Team";
 
         emailService.sendMail(recipient, subject, template);
+
+
+        // save..
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword =  passwordEncoder.encode( credentials.getPassword() );
+        userRepository.save( new User( credentials.getUsername(), encodedPassword , "USER" ));
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer" )
