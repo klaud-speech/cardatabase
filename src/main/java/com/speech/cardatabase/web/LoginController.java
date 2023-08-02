@@ -26,9 +26,9 @@ public class LoginController {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @RequestMapping(value="/login", method= RequestMethod.POST )
-    public ResponseEntity<?> getToken(@RequestBody AccountCredentials credentials ){
-        UsernamePasswordAuthenticationToken creds=
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<?> getToken(@RequestBody AccountCredentials credentials) {
+        UsernamePasswordAuthenticationToken creds =
                 new UsernamePasswordAuthenticationToken(
                         credentials.getUsername(),
                         credentials.getPassword()
@@ -37,14 +37,40 @@ public class LoginController {
         Authentication auth = authenticationManager.authenticate(creds);
 
 
-
         //토큰 생성
-        String jwts = jwtService.getToken( auth.getName() );
+        String jwts = jwtService.getToken(auth.getName());
 
         //생성된 토큰으로 응답을 생성
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer" + jwts )
+                .header(HttpHeaders.AUTHORIZATION, "Bearer" + jwts)
                 .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization")
                 .build();
+    }
+
+    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    public ResponseEntity<?> singIn(@RequestBody AccountCredentials credentials) {
+        UsernamePasswordAuthenticationToken creds =
+                new UsernamePasswordAuthenticationToken(
+                        credentials.getUsername(),
+                        credentials.getPassword()
+                );
+
+        System.out.println( credentials.getUsername() );
+        // Welcome E-mail Message
+        String recipient = "sahngwoon.lee@llsollu.com";
+        String subject = "Hello, " + credentials.getUsername() ;
+        String template = "Hello! \n\n"
+                + "This is a message just for you.\n\n"
+                + "We hope you're having a great day!\n\n"
+                + "Best regards,\n"
+                + "The LLsoLLu ezWEB Team";
+
+        emailService.sendMail(recipient, subject, template);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer" )
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization")
+                .build();
+
     }
 }
