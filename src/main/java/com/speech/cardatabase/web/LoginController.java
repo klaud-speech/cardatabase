@@ -1,6 +1,7 @@
 package com.speech.cardatabase.web;
 
 import com.speech.cardatabase.AccountCredentials;
+import com.speech.cardatabase.service.EmailService;
 import com.speech.cardatabase.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -10,11 +11,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class LoginController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -28,6 +35,8 @@ public class LoginController {
                 );
 
         Authentication auth = authenticationManager.authenticate(creds);
+
+
 
         //토큰 생성
         String jwts = jwtService.getToken( auth.getName() );
