@@ -19,12 +19,15 @@ public class CarRestTest {
 
     @Test
     public void testAuthentication() throws Exception {
+
+
         //올바른 자격증명으로 인증 테스트
         this.mockMvc.perform(
                 post("/login")
-                        .content("{\"username\":\"admin\", \"password\":\"admin\"}").
+                        .content("{\"username\":\"admin@llsollu.com\", \"password\":\"admin\"}").
                         header(HttpHeaders.CONTENT_TYPE, "application/json")).
                         andDo( print()).andExpect( status().isOk() );
 
     }
+
 }
