@@ -78,7 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // /login 엔드포인틍 대한 POST 요청은 보호되지 않음
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signin").permitAll()
-                .antMatchers(HttpMethod.POST, "/setProjectInfo").permitAll()
+                .antMatchers(HttpMethod.POST, "/project").permitAll()
+                .antMatchers(HttpMethod.POST, "/url").permitAll()
                 // 다른 모든 요청은 보호됨
                 .anyRequest().authenticated().and()
                 .exceptionHandling()

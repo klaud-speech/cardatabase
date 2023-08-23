@@ -4,6 +4,7 @@ import com.speech.cardatabase.domain.Owner;
 import com.speech.cardatabase.domain.Project;
 import com.speech.cardatabase.domain.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class ProjectController {
     @Autowired
     private ProjectRepository projectRepository;
 
-    @RequestMapping(value = "/setProjectInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/project", method = RequestMethod.POST)
     public ResponseEntity<?> setProjectInfo (@RequestBody Map<String, Object> postData){
 
         final String [] projectInfo = new String[ postData.size() ];
@@ -27,23 +28,51 @@ public class ProjectController {
         postData.entrySet().forEach( map ->{
             //sb.append(map.getKey() + " : " + map.getValue() + "\n");
             String temp = map.getValue().toString();
-            if( (map.getKey()).equals("projectname") ) {
+            if( (map.getKey()).equals("projectName") ) {
                 projectInfo[0] =  temp;
             }
-            if( (map.getKey()).equals("projecttype") ) projectInfo[1] = temp;
+            if( (map.getKey()).equals("projectType") ) projectInfo[1] = temp;
         });
 
-        Optional<Project> projectFound =  projectRepository.findByProjectname(projectInfo[0]);
-
-        if( projectFound.isEmpty() ) {
-            if (projectInfo[0].length() > 0)
-                projectRepository.save(new Project(projectInfo[0], projectInfo[1]));
-            return ResponseEntity.ok()
-                    .build();
+        if( projectInfo[0].length() > 0) {
+            Optional<Project> projectFound =  projectRepository.findByProjectname(projectInfo[0]);
+            if (  projectFound.isEmpty() ) {
+                projectRepository.save(new Project(projectInfo[0], projectInfo[1]));   //DB저장...
+                return ResponseEntity.ok()
+                        .build();
+            }
+            else{
+                return ResponseEntity.badRequest()
+                        .build();
+            }
         }
         else {
             return ResponseEntity.badRequest()
                     .build();
         }
+    }
+
+    @RequestMapping(value = "/url", method = RequestMethod.POST)
+    public ResponseEntity<?> setup (@RequestBody Map<String, Object> postData) {
+
+        final String[] projectInfo = new String[postData.size()];
+
+        /*
+        postData.entrySet().forEach(map -> {
+            //sb.append(map.getKey() + " : " + map.getValue() + "\n");
+            String temp = map.getValue().toString();
+            if ((map.getKey()).equals("domainurl")) {
+                projectInfo[0] = temp;
+            }
+            if ((map.getKey()).equals("sourcelanguage"))
+                projectInfo[1] = temp;
+
+            if ((map.getKey()).equals("urltype"))
+                projectInfo[3] = temp;
+
+        });
+        */
+        return ResponseEntity.ok()
+                .build();
     }
 }
