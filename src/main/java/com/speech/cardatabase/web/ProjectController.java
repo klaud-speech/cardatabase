@@ -61,23 +61,26 @@ public class ProjectController {
 
         final String[] projectInfo = new String[postData.size()];
 
-        LOGGER.info("url 메서드가 호출되었습니다.");
+        LOGGER.info("url 메서드가 호출되었습니다." + " argument : " + postData.size());
 
-        /*
         postData.entrySet().forEach(map -> {
-            //sb.append(map.getKey() + " : " + map.getValue() + "\n");
-            String temp = map.getValue().toString();
+            LOGGER.info("temp:" +  map.getValue().toString()  );
+
             if ((map.getKey()).equals("domainurl")) {
-                projectInfo[0] = temp;
+                projectInfo[0] = map.getValue().toString();
             }
             if ((map.getKey()).equals("sourcelanguage"))
-                projectInfo[1] = temp;
-
+                projectInfo[1] = map.getValue().toString();
+            if ((map.getKey()).equals("targetlanguage")){
+                projectInfo[1] = map.getValue().toString();
+            }
             if ((map.getKey()).equals("urltype"))
-                projectInfo[3] = temp;
+                projectInfo[3] = map.getValue().toString();
+
+
 
         });
-        */
+
         return ResponseEntity.ok()
                 .build();
     }
