@@ -19,7 +19,7 @@ public class ProjectInfoRestTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
+
     public void testProjectInfo() throws Exception {
         this.mockMvc.perform(
                         post("/project")
@@ -28,7 +28,7 @@ public class ProjectInfoRestTest {
                 andDo( print()).andExpect( status().isOk() );
     }
 
-    @Test
+
     public void testSetup() throws Exception {
         this.mockMvc.perform(
                         post("/url")

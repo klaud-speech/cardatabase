@@ -11,10 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
 
+//서명된 JWT를 생성하고 검증하는 클래스
 @Component
 public class JwtService {
     static final long EXPIRATIONTIME = 86400000;  // 1일을 밀리초로 계산한 것
     static final String PREFIX="Bearer";
+
+    //TODO, 시연용도로는 이것으로 충분하지만, 운영환경에서는 애플리케이션 구성에서 비밀키를 읽어야 한다.
     static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     //서명된 JWT 토큰 생성

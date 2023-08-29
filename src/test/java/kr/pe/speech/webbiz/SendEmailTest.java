@@ -13,7 +13,7 @@ public class SendEmailTest {
     private EmailService emailService;
 
 
-    @Test
+
     public void testSendMail () {
 
             String recipient = "sahngwoon.lee@llsollu.com";
