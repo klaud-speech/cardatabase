@@ -8,11 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpHeaders;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,11 +26,12 @@ public class ProjectController {
     private final Logger LOGGER = LoggerFactory.getLogger(ProjectController.class);
 
     @RequestMapping(value = "/project", method = RequestMethod.POST)
-    public ResponseEntity<?> setProjectInfo (@RequestBody Map<String, Object> postData){
+    public ResponseEntity<?> setProjectInfo (@RequestBody Map<String, Object> postData, @RequestHeader("Authorization") String requestHeader ){
 
         final String [] projectInfo = new String[ postData.size() ];
 
         LOGGER.info("project 메서드가 호출되었습니다." + " argument : " + postData.size());
+        LOGGER.info("project 메서드가 호출되었습니다." + " headers : " + requestHeader );
 
         postData.entrySet().forEach( map ->{
             //sb.append(map.getKey() + " : " + map.getValue() + "\n");

@@ -21,7 +21,11 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+/**
+ * customization to both WebSecurity and HttpSecurity
+ */
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;

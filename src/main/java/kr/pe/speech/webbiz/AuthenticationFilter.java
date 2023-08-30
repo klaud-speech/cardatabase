@@ -32,10 +32,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         throws ServletException, java.io.IOException {
         // Authorization 헤더에서 토큰을 가져옴
         String jws = request.getHeader(HttpHeaders.AUTHORIZATION);
+        LOGGER.info( "[JWT] token:" + jws );
+        LOGGER.info( "[JWT] request:" + request );
         if( jws != null ){
             //토큰을 확인하고 사용자를 얻음.
             String user = jwtService.getAuthUser(request);
-            LOGGER.info( "[JWT] user:" + user );
+            LOGGER.info( "[JWT] user:" + user );   //username
+
             //인증
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(user, null, java.util.Collections.emptyList() );
@@ -47,7 +50,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         }
         else{
             LOGGER.error( "[JWT] HttpHeaders.AUTHORIZATION is NULL" );
+            //throw new RuntimeException("권한정보가 없는 토큰입니다.");
         }
+
+        LOGGER.info("Next Filter");
 
         filterChain.doFilter( request, response);
 
