@@ -5,13 +5,14 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@Table(name="project")
+//@Data
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@Table(name="project")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +25,12 @@ public class Project {
     @Column(nullable = true)
     private String projecttype;
 
+    @ManyToOne
+    @JoinColumn( name="user_id")
+    @ToString.Exclude
+    private User user;
 
+/*
     public Project(){}
 
     public Project(String name, String type){
@@ -32,5 +38,5 @@ public class Project {
         this.projectname = name;
         this.projecttype = type;
     }
-
+*/
 }

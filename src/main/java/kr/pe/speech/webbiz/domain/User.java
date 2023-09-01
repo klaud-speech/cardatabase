@@ -8,44 +8,52 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@Table(name="user")
+//@Data
+
 @Entity
 @Getter
 @Setter
-@ToString
+@NoArgsConstructor
+@ToString(callSuper = true)
 @AllArgsConstructor
-@EqualsAndHashCode
+@Table(name="user")  // login-account
 public class User {
 
-    /* Auto Incremental Key
+    // Auto Incremental Key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
-     */
 
+    /*
     // UUID
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name="individual_user_id", columnDefinition = "BINARY(16)")
+    @Column(name="uuid_user_id", columnDefinition = "BINARY(16)")
     private UUID id;
+    */
 
 
-    @Column(nullable = false, unique = true)
+    //@Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String role;
 
+    @OneToMany( mappedBy = "user", fetch=FetchType.EAGER )
+    @ToString.Exclude
+    private List<Project> projectList = new ArrayList<>();
+
+    /*
     @OneToMany(fetch = FetchType.EAGER )
     @JoinColumn(name="user_id")
     private List<Project> projects = new ArrayList<>();
-
+    */
+/*
     public User(){}
 
     public User(String name, String password, String role){
@@ -54,4 +62,6 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+ */
 }

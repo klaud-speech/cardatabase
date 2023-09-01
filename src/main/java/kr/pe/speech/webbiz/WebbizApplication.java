@@ -9,11 +9,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class WebbizApplication implements CommandLineRunner {
 
-	private static final Logger logger= LoggerFactory.getLogger(WebbizApplication.class);
+	private static final Logger LOGGER= LoggerFactory.getLogger(WebbizApplication.class);
 
 	@Autowired
 	private CarRepository repostory;
@@ -22,14 +24,18 @@ public class WebbizApplication implements CommandLineRunner {
 	private OwnerRepository orepository;
 
 	@Autowired
-	private UserRepository urepository;
+	private UserRepository userRepository;
+
+	@Autowired
+	private ProjectRepository projectRepository;
+
 
 
 	public static void main(String[] args) {
 		// 이 주석을 추가하면 애플리케이션이 재시작됨.( 정말..?  No..No...)
 
 		SpringApplication.run(WebbizApplication.class, args);
-		logger.info("Application started");
+		LOGGER.info("Application started");
 	}
 
 	@Override
@@ -46,14 +52,24 @@ public class WebbizApplication implements CommandLineRunner {
 
 
 		for (Car car : repostory.findAll() ){
-			logger.info( car.getBrand() + " " + car.getModel() );
+			LOGGER.info( car.getBrand() + " " + car.getModel() );
 		}
 
-		urepository.save( new User("user@llsollu.com", "$2y$04$VpbFhaNwnnyIUER75dED6Ooof4FWKv4LW3q.zZWcR5.c1Evu70yv2", "USER" ));
-		urepository.save( new User("admin@llsollu.com", "$2y$04$ZNmboHv6ksX6N0bZpx8F3u9uL8cu0SV/cQDOBD/1wLkZaprz2pkyq", "ADMIN"));
+		User user1 = new User();
+		user1.setUsername("user@llsollu.com" );
+		user1.setPassword("$2y$04$VpbFhaNwnnyIUER75dED6Ooof4FWKv4LW3q.zZWcR5.c1Evu70yv2");
+		user1.setRole("USER");
+
+		userRepository.save( user1 );
+
+		User user2 = new User();
+		user2.setUsername("admin@llsollu.com");
+		user2.setPassword("$2y$04$ZNmboHv6ksX6N0bZpx8F3u9uL8cu0SV/cQDOBD/1wLkZaprz2pkyq");
+		user2.setRole("ADMIN");
+
+		userRepository.save( user2 );
 
 
 
 	}
-
 }
