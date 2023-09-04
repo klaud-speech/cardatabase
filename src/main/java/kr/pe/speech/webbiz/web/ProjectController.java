@@ -31,7 +31,7 @@ public class ProjectController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ProjectController.class);
 
-    @RequestMapping(value = "/project", method = RequestMethod.POST)
+    //@RequestMapping(value = "/project", method = RequestMethod.POST)
     public ResponseEntity<?> setProjectInfo (@RequestBody Map<String, Object> postData) {
 
         LOGGER.info( "ProjectController::setProjectInfo(@RequestBody...)");
@@ -51,12 +51,14 @@ public class ProjectController {
         project1.setProjectname( "www.llsollu.com" );
         project1.setProjecttype( "wordpress" );
         project1.setUser(user2);
+        project1.getUser().getProjectList().add(project1);
         projectRepository.save(project1);
 
         Project project2 = new Project( );
         project2.setProjectname( "www.speech.pe.kr" );
         project2.setProjecttype( "others" );
         project2.setUser(user2);
+        project2.getUser().getProjectList().add(project2);
         projectRepository.save(project2);
 
         //테스트 코드
@@ -85,7 +87,7 @@ public class ProjectController {
     }
 
 
-    //@RequestMapping(value = "/project", method = RequestMethod.POST)
+    @RequestMapping(value = "/project", method = RequestMethod.POST)
     public ResponseEntity<?> setProjectInfo (@RequestBody Map<String, Object> postData, @RequestHeader("Authorization") String requestHeader ){
 
         final String [] projectInfo = new String[ postData.size() ];
@@ -107,39 +109,25 @@ public class ProjectController {
         });
 
         if( projectInfo[0].length() > 0) {
-            //Optional<Project> projectFound =  projectRepository.findByProjectname(projectInfo[0]);
-            //if (  projectFound.isEmpty() ) {
-            if (  true  ) {
+            Optional<Project> projectFound =  projectRepository.findByProjectname(projectInfo[0]);
+            if (  projectFound.isEmpty() ) {
+
 
                 //TODO
                 // 현재 Login 된 것으로 바꾸어야 함. ( 3L -> ?? )
                 Optional<User> user = userRepository.findByUsername(userName);
                 if( user.isPresent()) {
 
-                        //다대일
-                        //User user1 = user.get();
+                    //다대일
+                    User user1 = user.get();
 
-                        User user2 = new User();
-                        user2.setUsername("lswbhm88@abc.com");
-                        user2.setPassword("asdf");
-                        user2.setRole("USER");
+                    Project project1 = new Project( );
+                    project1.setProjectname( projectInfo[0] );
+                    project1.setProjecttype( projectInfo[1] );
+                    project1.setUser(user1);
+                    project1.getUser().getProjectList().add(project1);
+                    projectRepository.save(project1);
 
-                        userRepository.save(user2);
-
-
-                        Project project1 = new Project( );
-                        //project1.setProjectname( projectInfo[0] );
-                        //project1.setProjecttype( projectInfo[1] );
-                        project1.setProjectname( "www.llsollu.com" );
-                        project1.setProjecttype( "wordpress" );
-                        project1.setUser(user2);
-                        projectRepository.save(project1);
-
-                        Project project2 = new Project( );
-                        project2.setProjectname( "www.speech.pe.kr" );
-                        project2.setProjecttype( "others" );
-                        project2.setUser(user2);
-                        projectRepository.save(project2);
 
                     /*
                     LOGGER.info("user1 : " + user1 );
@@ -148,15 +136,16 @@ public class ProjectController {
                      */
 
 
-                        //테스트 코드
-                        //List<Project> projects = userRepository.findByUsername(user1.getUsername()).get().getProjectList();
-                        List<Project> projects = userRepository.findByUsername("lswbhm88@abc.com").get().getProjectList();
+                    //테스트 코드
+                    List<Project> projects = userRepository.findByUsername(user1.getUsername()).get().getProjectList();
+                    //List<Project> projects = userRepository.findByUsername("lswbhm88@abc.com").get().getProjectList();
 
-                        LOGGER.info("projects.size() : " + projects.size() );
+                    LOGGER.info("projects.size() : " + projects.size() );
 
-                        for(Project  foundProject : projects ){
-                            LOGGER.info(" PROJECTS : " + foundProject) ;
-                        }
+                    for(Project  foundProject : projects ){
+                        LOGGER.info(" PROJECTS : " + foundProject) ;
+                    }
+
 
                     /* 일대다
                     projectRepository.save(project);   //DB저장...
