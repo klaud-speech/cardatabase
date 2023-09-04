@@ -47,9 +47,9 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> getToken(@RequestBody AccountCredentials credentials) {
 
-        LOGGER.info( "LoginController::/login >>>>  이하에서 DB 연관 깨짐...");
+        //LOGGER.info( "LoginController::/login >>>>  이하에서 DB 연관 깨짐...");
 
-        LOGGER.info( " UsernamePasswordAuthenticationToken()");
+        //LOGGER.info( " UsernamePasswordAuthenticationToken()");
         UsernamePasswordAuthenticationToken creds =
                 new UsernamePasswordAuthenticationToken(
                         credentials.getUsername(),
@@ -57,11 +57,11 @@ public class LoginController {
                 );
 
 
-        LOGGER.info( " authenticationManager.authenticate ");
+        //LOGGER.info( " authenticationManager.authenticate ");
         Authentication auth = authenticationManager.authenticate(creds);
 
 
-        LOGGER.info( " jwtService.getToken() << 토큰 생성");
+        //LOGGER.info( " jwtService.getToken() << 토큰 생성");
         //토큰 생성
         String jwts = jwtService.getToken(auth.getName());
 

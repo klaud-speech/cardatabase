@@ -30,6 +30,20 @@ public class Project {
     @ToString.Exclude
     private User user;
 
+    /*
+    // persistence context
+    public void setUser(User user){
+        if(this.user != null ){
+            this.user.getProjectList().remove(this);
+        }
+        this.user = user;
+        if(this.user != null){
+            user.getProjectList().add(this);
+        }
+    }
+
+     */
+
 /*
     public Project(){}
 

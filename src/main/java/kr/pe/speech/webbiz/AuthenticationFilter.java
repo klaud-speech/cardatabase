@@ -43,12 +43,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
         throws ServletException, java.io.IOException {
 
-        LOGGER.info( "AuthenticationFilter::doFilterInternal(...)");
+        //LOGGER.info( "AuthenticationFilter::doFilterInternal(...)");
 
         // Authorization 헤더에서 토큰을 가져옴
         String jws = request.getHeader(HttpHeaders.AUTHORIZATION);
-        LOGGER.info( "[JWT] token:" + jws );
-        LOGGER.info( "[JWT] request:" + request );
+        //LOGGER.info( "[JWT] token:" + jws );
+        //LOGGER.info( "[JWT] request:" + request );
         if( jws != null ){
             //토큰을 확인하고 사용자를 얻음.
             String user = jwtService.getAuthUser(request);
@@ -58,7 +58,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(user, null, java.util.Collections.emptyList() );
 
-            LOGGER.info( "[JWT] authentication:" + authentication );
+            //LOGGER.info( "[JWT] authentication:" + authentication );
 
             SecurityContextHolder.getContext()
                     .setAuthentication(authentication);
@@ -68,13 +68,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             //throw new RuntimeException("권한정보가 없는 토큰입니다.");
        }
 
-        LOGGER.info("Next Filter Chain");
+        //LOGGER.info("Next Filter Chain");
 
 
 
         filterChain.doFilter( request, response);
 
 
-        LOGGER.info("After Filter Chain");
+        //LOGGER.info("After Filter Chain");
     }
 }

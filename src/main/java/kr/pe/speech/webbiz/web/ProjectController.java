@@ -91,15 +91,15 @@ public class ProjectController {
     public ResponseEntity<?> setProjectInfo (@RequestBody Map<String, Object> postData, @RequestHeader("Authorization") String requestHeader ){
 
         final String [] projectInfo = new String[ postData.size() ];
-        LOGGER.info("project 메서드가 호출되었습니다." + " argument : " + postData.size());
+        //LOGGER.info("project 메서드가 호출되었습니다." + " argument : " + postData.size());
 
         String userName = jwtService.getAuthUser(requestHeader);
-        LOGGER.info("project 메서드가 호출되었습니다." + " userName : " + userName );
+        //LOGGER.info("project 메서드가 호출되었습니다." + " userName : " + userName );
 
         postData.entrySet().forEach( map ->{
             //sb.append(map.getKey() + " : " + map.getValue() + "\n");
 
-            LOGGER.info("temp:" +  map.getValue().toString()  );
+            //LOGGER.info("temp:" +  map.getValue().toString()  );
 
             String temp = map.getValue().toString();
             if( (map.getKey()).equals("projectName") ) {

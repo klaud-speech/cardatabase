@@ -1,5 +1,6 @@
 package kr.pe.speech.webbiz.entity;
 
+import kr.pe.speech.webbiz.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
