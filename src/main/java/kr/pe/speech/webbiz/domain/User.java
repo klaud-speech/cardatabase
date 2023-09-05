@@ -1,5 +1,6 @@
 package kr.pe.speech.webbiz.domain;
 
+import kr.pe.speech.webbiz.entity.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
 @ToString(callSuper = true)
 @AllArgsConstructor
 @Table(name="user")  // login-account
-public class User {
+public class User extends BaseEntity {
 
     // Auto Incremental Key
     @Id
