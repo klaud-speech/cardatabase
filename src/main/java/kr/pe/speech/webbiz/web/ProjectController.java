@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.yaml.snakeyaml.LoaderOptions;
 
 import java.net.http.HttpHeaders;
 import java.util.List;
@@ -48,15 +49,15 @@ public class ProjectController {
         Project project1 = new Project( );
         //project1.setProjectname( projectInfo[0] );
         //project1.setProjecttype( projectInfo[1] );
-        project1.setProjectname( "www.llsollu.com" );
-        project1.setProjecttype( "wordpress" );
+        project1.setProjectName( "www.llsollu.com" );
+        project1.setProjectType( "wordpress" );
         project1.setUser(user2);
         project1.getUser().getProjectList().add(project1);
         projectRepository.save(project1);
 
         Project project2 = new Project( );
-        project2.setProjectname( "www.speech.pe.kr" );
-        project2.setProjecttype( "others" );
+        project2.setProjectName( "www.speech.pe.kr" );
+        project2.setProjectType( "others" );
         project2.setUser(user2);
         project2.getUser().getProjectList().add(project2);
         projectRepository.save(project2);
@@ -109,21 +110,17 @@ public class ProjectController {
         });
 
         if( projectInfo[0].length() > 0) {
-            Optional<Project> projectFound =  projectRepository.findByProjectname(projectInfo[0]);
+            Optional<Project> projectFound =  projectRepository.findByProjectName(projectInfo[0]);
             if (  projectFound.isEmpty() ) {
 
-
-                //TODO
-                // 현재 Login 된 것으로 바꾸어야 함. ( 3L -> ?? )
                 Optional<User> user = userRepository.findByUsername(userName);
                 if( user.isPresent()) {
-
                     //다대일
                     User user1 = user.get();
 
                     Project project1 = new Project( );
-                    project1.setProjectname( projectInfo[0] );
-                    project1.setProjecttype( projectInfo[1] );
+                    project1.setProjectName( projectInfo[0] );
+                    project1.setProjectType( projectInfo[1] );
                     project1.setUser(user1);
                     project1.getUser().getProjectList().add(project1);
                     projectRepository.save(project1);
@@ -204,10 +201,33 @@ public class ProjectController {
             }
             if ((map.getKey()).equals("urltype"))
                 projectInfo[3] = map.getValue().toString();
-
-
-
         });
+
+
+        if( projectInfo[0].length() > 0) {  // url name
+            Optional<Project> projectFound = projectRepository.findByUrlName( projectInfo[0] );
+
+            if (projectFound.isEmpty()) {
+
+                Optional<User> user = userRepository.findByUsername(userName);
+                if (user.isPresent()) {
+
+                    User user1 = user.get();
+
+                    List<Project> projects;
+                    projects = projectRepository.findLatestProjectUser( user1.getId() );
+
+                    projects.get(0).setUrlName(  projectInfo[0] );
+                    projects.get(0).setSourceLang( projectInfo[1] );
+                    projects.get(0).setTargetLang( projectInfo[2] );
+                    projects.get(0).setSubType( projectInfo[3] );
+
+                    projectRepository.flush();
+
+
+                }
+            }
+        }
 
         return ResponseEntity.ok()
                 .build();

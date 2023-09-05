@@ -72,6 +72,22 @@ public class WebbizApplication implements CommandLineRunner {
 		userRepository.save( user2 );
 
 
+		Project project1 = new Project();
+		project1.setProjectName("www.speech.pe.kr");
+		project1.setProjectType("others");
+		project1.setUser(user2);
+		project1.getUser().getProjectList().add(project1);
+		projectRepository.save(project1);
+
+		Project project2 = new Project();
+		project2.setProjectName("www.llsollu.com");
+		project2.setProjectType("wordpress");
+		project2.setUser(user2);
+		project2.getUser().getProjectList().add(project2);
+		projectRepository.save(project2);
+
+
+
 
 	}
 }

@@ -15,16 +15,29 @@ import javax.persistence.*;
 @ToString(callSuper = true)
 @Table(name="project")
 public class Project extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
 
     @Column( nullable = false, unique = true )
-    private String projectname;
+    private String projectName;
 
     @Column(nullable = true)
-    private String projecttype;
+    private String projectType;
+
+    @Column( nullable = true )
+    private String urlName;
+
+    @Column( nullable = true )
+    private String sourceLang;
+
+    @Column( nullable = true )
+    private String targetLang;
+
+    @Column( nullable = true )
+    private String subType;
 
     @ManyToOne
     @JoinColumn( name="user_id")
@@ -54,4 +67,5 @@ public class Project extends BaseEntity {
         this.projecttype = type;
     }
 */
+
 }
